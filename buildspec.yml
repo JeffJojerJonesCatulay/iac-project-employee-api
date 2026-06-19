@@ -1,0 +1,52 @@
+version: 0.2
+
+env:
+  secrets-manager:
+    GITHUB_TOKEN: "github-cred:GitToken"
+    DOCKER_USERNAME: "docker-creds:DOCKER_USERNAME"
+    DOCKER_PASSWORD: "docker-creds:DOCKER_PASSWORD"
+
+phases:
+  install:
+    commands:
+      - apt-get update
+      - apt-get install -y git jq wget
+
+  pre_build:
+    commands:
+      - echo Logging into Docker Hub...
+      - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - 'echo "Token length: ${#GITHUB_TOKEN}"'
+      - echo "Setting image tag..."
+      - IMAGE_TAG=v1.0.$CODEBUILD_BUILD_NUMBER
+      - echo "Logging in to Amazon ECR..."
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 961776040935.dkr.ecr.us-east-1.amazonaws.com
+      - REPO_URI=961776040935.dkr.ecr.us-east-1.amazonaws.com/app-images-global-30620849894
+
+  build:
+    commands:
+      - echo "Building Docker image..."
+      - pwd
+      - ls -la
+      - 'docker build -t "${REPO_URI}:${IMAGE_TAG}" .'
+      - echo "Pushing Docker image..."
+      - 'docker push "${REPO_URI}:${IMAGE_TAG}"'
+
+  post_build:
+    commands:
+      - echo "Cloning GitOps repo..."
+      - rm -rf gitops-argocd || true
+      - git clone --branch dev https://github.com/JeffJojerJonesCatulay/gitops-argocd.git
+      - echo "Updating deployment manifest..."
+      - cd gitops-argocd
+      - 'sed -i "s|image:.*|image: ${REPO_URI}:${IMAGE_TAG}|g" employee-api/dev/deployment.yaml'
+      - git config user.email "ci-bot@example.com"
+      - git config user.name "CodeBuild CI"
+      - git add .
+      - 'git commit -m "feat-update-dev-image-${IMAGE_TAG}" || true'
+      - echo "Encoding GitHub token for safe URL use..."
+      - ENCODED_TOKEN=$(python3 -c "import urllib.parse, os; print(urllib.parse.quote(os.environ['GITHUB_TOKEN'], safe=''))")
+      - echo "Setting remote with encoded token..."
+      - git remote set-url origin "https://x-access-token:${ENCODED_TOKEN}@github.com/JeffJojerJonesCatulay/gitops-argocd.git"
+      - echo "Pushing changes back to GitHub..."
+      - git push origin dev
