@@ -1,5 +1,6 @@
 # Install Maven
-FROM public.ecr.aws/amazoncorretto/maven:3.9.6-alpine-21 AS build
+FROM public.ecr.aws/amazoncorretto/amazoncorretto:21-alpine AS build
+RUN apk add --no-cache maven
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
