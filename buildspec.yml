@@ -23,9 +23,9 @@ phases:
       - echo "Building Docker image with tag $IMAGE_TAG..."
       - pwd
       - ls -la
-      - 'docker build -t ${REPO_URI}:${IMAGE_TAG} .'
+      - docker build -t ${REPO_URI}:${IMAGE_TAG} .
       - echo "Pushing Docker image..."
-      - 'docker push ${REPO_URI}:${IMAGE_TAG}'
+      - docker push ${REPO_URI}:${IMAGE_TAG}
 
   post_build:
     commands:
@@ -38,6 +38,6 @@ phases:
       - git config user.email "ci-bot@example.com"
       - git config user.name "CodeBuild CI"
       - git add .
-      - 'git commit -m "feat: update dev image to ${REPO_URI}:${IMAGE_TAG}"'
+      - git commit -m "feat: update dev image to ${REPO_URI}:${IMAGE_TAG}"
       - echo "Pushing changes back to GitHub..."
       - git push https://x-access-token:${GITHUB_TOKEN}@github.com/JeffJojerJonesCatulay/gitops-argocd.git dev
