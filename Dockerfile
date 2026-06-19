@@ -1,5 +1,6 @@
 # Build
-FROM maven:3.9-eclipse-temurin-21 AS build
+FROM public.ecr.aws/amazoncorretto/amazoncorretto:21 AS build
+RUN yum install -y maven
 WORKDIR /app
 COPY pom.xml .
 RUN mvn dependency:go-offline
