@@ -1,5 +1,6 @@
-# Build
 FROM public.ecr.aws/amazoncorretto/amazoncorretto:21 AS build
+
+RUN yum install -y tar
 
 WORKDIR /app
 
@@ -8,7 +9,6 @@ COPY . .
 RUN chmod +x mvnw
 RUN ./mvnw clean package -DskipTests
 
-# Runtime
 FROM public.ecr.aws/amazoncorretto/amazoncorretto:21
 
 WORKDIR /app
