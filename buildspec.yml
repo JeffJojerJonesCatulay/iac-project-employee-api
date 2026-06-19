@@ -26,15 +26,15 @@ phases:
 
   post_build:
     commands:
-      - echo Cloning GitOps repo...
-      - rm -rf gitops-argocd || true
-      - git clone https://github.com/JeffJojerJonesCatulay/gitops-argocd.git
-      - echo Updating deployment manifest with build number ${CODEBUILD_BUILD_NUMBER}...
-      - cd gitops-argocd
-      - yq e -i ".spec.template.spec.containers[0].image = \"${DOCKER_IMAGE}:${CODEBUILD_BUILD_NUMBER}\"" employee-api/dev/deployment.yaml
-      - git config user.email "ci-bot@example.com"
-      - git config user.name "CodeBuild CI"
-      - git add .
-      - git commit -m "feat: update dev image to ${DOCKER_IMAGE}:${CODEBUILD_BUILD_NUMBER}"
-      - echo Pushing changes back to GitHub...
-      - git push https://x-access-token:${GITHUB_TOKEN}@github.com/JeffJojerJonesCatulay/gitops-argocd.git main
+    - echo "Cloning GitOps repo..."
+    - rm -rf gitops-argocd || true
+    - git clone https://github.com/JeffJojerJonesCatulay/gitops-argocd.git
+    - echo "Updating deployment manifest with build number ${CODEBUILD_BUILD_NUMBER}..."
+    - cd gitops-argocd
+    - yq e -i ".spec.template.spec.containers[0].image = \"${REPO_URI}:${IMAGE_TAG}\"" employee-api/dev/deployment.yaml
+    - git config user.email "ci-bot@example.com"
+    - git config user.name "CodeBuild CI"
+    - git add .
+    - git commit -m "feat: update dev image to ${REPO_URI}:${IMAGE_TAG}"
+    - echo "Pushing changes back to GitHub..."
+    - git push https://x-access-token:${GITHUB_TOKEN}@github.com/JeffJojerJonesCatulay/gitops-argocd.git main
