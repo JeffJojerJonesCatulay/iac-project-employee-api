@@ -40,4 +40,4 @@ phases:
       - git add .
       - 'git commit -m "feat-update-dev-image-${IMAGE_TAG}" || true'
       - echo "Pushing changes back to GitHub..."
-      - 'git push https://x-access-token:${GITHUB_TOKEN}@github.com/JeffJojerJonesCatulay/gitops-argocd.git HEAD:dev'
+      - 'git push https://x-access-token:${GITHUB_TOKEN}@github.com/JeffJojerJonesCatulay/gitops-argocd.git HEAD:dev || true'
