@@ -31,7 +31,7 @@ phases:
       - git clone https://github.com/JeffJojerJonesCatulay/gitops-argocd.git
       - echo "Updating deployment manifest with build number ${CODEBUILD_BUILD_NUMBER}..."
       - cd gitops-argocd
-      - yq e -i '.spec.template.spec.containers[0].image = "${REPO_URI}:${IMAGE_TAG}"' employee-api/dev/deployment.yaml
+      - "yq e -i '.spec.template.spec.containers[0].image = \"${REPO_URI}:${IMAGE_TAG}\"' employee-api/dev/deployment.yaml"
       - git config user.email "ci-bot@example.com"
       - git config user.name "CodeBuild CI"
       - git add .
