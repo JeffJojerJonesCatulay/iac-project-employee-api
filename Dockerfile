@@ -8,7 +8,7 @@ RUN mvn dependency:go-offline
 RUN mvn clean package -DskipTests
 
 # Run JDK
-FROM eclipse-temurin:21-jdk-alpine
+FROM public.ecr.aws/amazoncorretto/amazoncorretto:21-alpine
 WORKDIR /app
 COPY --from=build /app/target/*.jar emp-api.jar
 EXPOSE 9010
