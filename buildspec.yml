@@ -3,8 +3,8 @@ version: 0.2
 env:
   secrets-manager:
     GITHUB_TOKEN: "github-cred:GitToken"
-    DOCKERHUB_USERNAME: "docker-creds:DOCKERHUB_USERNAME"
-    DOCKERHUB_PASSWORD: "docker-creds:DOCKERHUB_PASSWORD"
+    DOCKER_USERNAME: "docker-creds:DOCKER_USERNAME"
+    DOCKER_PASSWORD: "docker-creds:DOCKER_PASSWORD"
 
 phases:
   install:
@@ -15,7 +15,7 @@ phases:
   pre_build:
     commands:
       - echo Logging into Docker Hub...
-      - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+      - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
       - 'echo "Token length: ${#GITHUB_TOKEN}"'
       - echo "Setting image tag..."
       - IMAGE_TAG=v1.0.$CODEBUILD_BUILD_NUMBER
