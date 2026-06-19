@@ -7,7 +7,12 @@ env:
 phases:
   install:
     commands:
-      - yum install -y git jq yq
+      - echo "Installing dependencies..."
+      - dnf install -y git jq wget || yum install -y git jq wget
+      - wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+      - chmod +x yq_linux_amd64
+      - mv yq_linux_amd64 /usr/local/bin/yq
+      - yq --version
 
   pre_build:
     commands:
