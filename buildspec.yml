@@ -31,7 +31,7 @@ phases:
     commands:
       - echo "Cloning GitOps repo..."
       - rm -rf gitops-argocd || true
-      - git clone https://github.com/JeffJojerJonesCatulay/gitops-argocd.git
+      - git clone --branch dev https://github.com/JeffJojerJonesCatulay/gitops-argocd.git
       - echo "Updating deployment manifest..."
       - cd gitops-argocd
       - 'sed -i "s|image:.*|image: ${REPO_URI}:${IMAGE_TAG}|g" employee-api/dev/deployment.yaml'
