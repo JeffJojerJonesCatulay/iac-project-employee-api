@@ -12,6 +12,7 @@ phases:
 
   pre_build:
     commands:
+      - echo "Token length: ${#GITHUB_TOKEN}"
       - echo "Setting image tag..."
       - IMAGE_TAG=v1.0.$CODEBUILD_BUILD_NUMBER
       - echo "Logging in to Amazon ECR..."
@@ -40,5 +41,5 @@ phases:
       - git add .
       - 'git commit -m "feat-update-dev-image-${IMAGE_TAG}" || true'
       - echo "Pushing changes back to GitHub..."
-      - git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/JeffJojerJonesCatulay/gitops-argocd.git
-      - git push origin HEAD:dev
+      - git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/JeffJojerJonesCatulay/gitops-argocd.git"
+      - git push origin dev
