@@ -40,7 +40,7 @@ phases:
       - git config user.name "CodeBuild CI"
       - git add .
       - 'git commit -m "feat-update-dev-image-${IMAGE_TAG}" || true'
-      - echo "Pushing changes back to GitHub..."
+      - echo "Encoding GitHub token for safe URL use..."
       - ENCODED_TOKEN=$(python3 -c "import urllib.parse, os; print(urllib.parse.quote(os.environ['GITHUB_TOKEN'], safe=''))")
       - echo "Setting remote with encoded token..."
       - git remote set-url origin "https://x-access-token:${ENCODED_TOKEN}@github.com/JeffJojerJonesCatulay/gitops-argocd.git"
