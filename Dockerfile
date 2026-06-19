@@ -1,16 +1,14 @@
-# Build Stage
+# Build
 FROM public.ecr.aws/amazoncorretto/amazoncorretto:21 AS build
-
-RUN yum install -y maven
 
 WORKDIR /app
 
-COPY pom.xml .
-COPY src ./src
+COPY . .
 
-RUN mvn clean package -DskipTests
+RUN chmod +x mvnw
+RUN ./mvnw clean package -DskipTests
 
-# Runtime Stage
+# Runtime
 FROM public.ecr.aws/amazoncorretto/amazoncorretto:21
 
 WORKDIR /app
