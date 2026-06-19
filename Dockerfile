@@ -1,15 +1,17 @@
-FROM public.ecr.aws/amazoncorretto/amazoncorretto:21 AS build
-
-RUN yum install -y tar
+# Build Stage
+FROM maven:3.9.9-eclipse-temurin-21 AS build
 
 WORKDIR /app
 
-COPY . .
+COPY pom.xml .
+RUN mvn dependency:go-offline
 
-RUN chmod +x mvnw
-RUN ./mvnw clean package -DskipTests
+COPY src ./src
 
-FROM public.ecr.aws/amazoncorretto/amazoncorretto:21
+RUN mvn clean package -DskipTests
+
+# Runtime Stage
+FROM eclipse-temurin:21-jre
 
 WORKDIR /app
 
@@ -17,4 +19,4 @@ COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 9010
 
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
