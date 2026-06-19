@@ -15,7 +15,7 @@ phases:
       - IMAGE_TAG=v1.0.$CODEBUILD_BUILD_NUMBER
       - echo "Logging in to Amazon ECR..."
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 961776040935.dkr.ecr.us-east-1.amazonaws.com
-      - REPO_URI=961776040935.dkr.ecr.us-east-1.amazonaws.com/image-app/eks-react-app
+      - REPO_URI=961776040935.dkr.ecr.us-east-1.amazonaws.com/app-images-global-30620849894
 
   build:
     commands:
