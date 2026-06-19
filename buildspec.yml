@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   secrets-manager:
-    GITHUB_TOKEN: "github-cred:Token"
+    GITHUB_TOKEN: "github-cred:GitToken"
 
 phases:
   install:
